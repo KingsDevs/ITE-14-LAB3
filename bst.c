@@ -58,7 +58,7 @@ void insert_node(node * root, int data)
 
 }
 
-void recur_display_tree(node * n, int curr_space, bool isleft)
+void recur_display_tree(node * n, int curr_space, char nodetype)
 {
     if(n != NULL)
     {
@@ -69,19 +69,22 @@ void recur_display_tree(node * n, int curr_space, bool isleft)
         }
 
         printf("|\n");        
-        
+
         for (int i = 0; i < curr_space; i++)
         {
             printf(" ");
         }
 
-        printf("-- %d\n", n->data);
+        printf("-- %d%c\n", n->data, nodetype);
 
-        if(n->left != NULL && n->right != NULL)
-            printf("|");
+        // if(n->left != NULL && n->right != NULL)
+        // {
+        //     printf("|");
+        // }
         
-        
-        recur_display_tree(n->left, curr_space + SPACE, true);
+        recur_display_tree(n->left, curr_space + SPACE, 'L');
+
+        recur_display_tree(n->right, curr_space + SPACE, 'R');
     }
 
     
@@ -89,14 +92,14 @@ void recur_display_tree(node * n, int curr_space, bool isleft)
 
 void display_tree(node * n)
 {
-    recur_display_tree(n, 0, true);
+    recur_display_tree(n, 0, 'H');
 }
 
 int main(int argc, char const *argv[])
 {
     node * root = create_node(3);
 
-    int nums[] = {1, 5, 4, 8, 10, 7, 2};
+    int nums[] = {2, 5, 4, 8, 10, 7, 1};
 
     for (int i = 0; i < sizeof(nums) / sizeof(int); i++)
     {
