@@ -76,11 +76,6 @@ void recur_display_tree(node * n, int curr_space, char nodetype)
         }
 
         printf("-- %d%c\n", n->data, nodetype);
-
-        // if(n->left != NULL && n->right != NULL)
-        // {
-        //     printf("|");
-        // }
         
         recur_display_tree(n->left, curr_space + SPACE, 'L');
 
@@ -97,18 +92,46 @@ void display_tree(node * n)
 
 int main(int argc, char const *argv[])
 {
-    node * root = create_node(3);
+    node * root = NULL;
 
-    int nums[] = {2, 5, 4, 8, 10, 7, 1};
-
-    for (int i = 0; i < sizeof(nums) / sizeof(int); i++)
+    while (1)
     {
-        insert_node(root, nums[i]);
-    }
+        printf("1. Display Tree\n");
+        printf("2. Insert Node\n");
+        printf("3. Delete Node\n");
+        printf("4. Exit\n");
+        printf(">> ");
 
-    display_tree(root);
+        int choice;
+        scanf(" %d", &choice);
+
+        if(choice == 1)
+        {
+            if(root == NULL)
+                printf("The tree is empty!\n");
+            else
+                display_tree(root);
+        }
+        else if(choice == 2)
+        {
+            printf("Enter a number to insert\n>> ");
+            int num;
+            scanf(" %d", &num);
+
+            if(root == NULL)
+                root = create_node(num);
+            else
+                insert_node(root, num);
+        }
+        else if(choice == 3)
+        {
+            printf("Under Construction\n");
+        }
+        else
+            break;
     
-    // printf("\nSuccess\n");
+    }
+    
 
     return 0;
 }
