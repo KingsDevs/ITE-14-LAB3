@@ -85,6 +85,32 @@ void recur_display_tree(node * n, int curr_space, char nodetype)
     
 }
 
+bool delete_node(node * n, int data)
+{
+    if (n->data == data)
+    {
+        if(n->left == NULL && n->right == NULL)
+        {
+            free(n);
+            n = NULL;
+
+            return true;
+        }
+    }
+    else
+    {
+        if(n->data < data)
+            delete_node(n->right, data);
+        
+        if(n->data > data)
+            delete_node(n->left, data);
+
+        if(n->left == NULL && n->right == NULL)
+            return false;
+    }
+    
+}
+
 void display_tree(node * n)
 {
     recur_display_tree(n, 0, 'H');
@@ -94,43 +120,64 @@ int main(int argc, char const *argv[])
 {
     node * root = NULL;
 
-    while (1)
-    {
-        printf("1. Display Tree\n");
-        printf("2. Insert Node\n");
-        printf("3. Delete Node\n");
-        printf("4. Exit\n");
-        printf(">> ");
+    root = create_node(4);
+    insert_node(root, 1);
 
-        int choice;
-        scanf(" %d", &choice);
+    delete_node(root, 1);
 
-        if(choice == 1)
-        {
-            if(root == NULL)
-                printf("The tree is empty!\n");
-            else
-                display_tree(root);
-        }
-        else if(choice == 2)
-        {
-            printf("Enter a number to insert\n>> ");
-            int num;
-            scanf(" %d", &num);
+    // while (1)
+    // {
+    //     printf("1. Display Tree\n");
+    //     printf("2. Insert Node\n");
+    //     printf("3. Delete Node\n");
+    //     printf("4. Exit\n");
+    //     printf(">> ");
 
-            if(root == NULL)
-                root = create_node(num);
-            else
-                insert_node(root, num);
-        }
-        else if(choice == 3)
-        {
-            printf("Under Construction\n");
-        }
-        else
-            break;
+    //     int choice;
+    //     scanf(" %d", &choice);
+
+    //     if(choice == 1)
+    //     {
+    //         if(root == NULL)
+    //             printf("The tree is empty!\n");
+    //         else
+    //             display_tree(root);
+    //     }
+    //     else if(choice == 2)
+    //     {
+    //         printf("Enter a number to insert\n>> ");
+    //         int num;
+    //         scanf(" %d", &num);
+
+    //         if(root == NULL)
+    //             root = create_node(num);
+    //         else
+    //             insert_node(root, num);
+    //     }
+    //     else if(choice == 3)
+    //     {
+    //         if(root == NULL)
+    //         {
+    //             printf("The tree is empty!\n");
+    //             continue;
+    //         }
+
+    //         printf("Enter a number to delete\n>> ");
+    //         int num;
+    //         scanf(" %d", &num);
+
+    //         bool isfound = delete_node(root, num);
+
+    //         if(isfound)
+    //             printf("The node successfully deleted!\n");
+    //         else
+    //         printf("Node not found!\n");
+
+    //     }
+    //     else
+    //         break;
     
-    }
+    // }
     
 
     return 0;
