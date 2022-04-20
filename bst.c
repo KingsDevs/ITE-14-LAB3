@@ -13,6 +13,13 @@ typedef struct _node
 
 }node;
 
+typedef struct _nodelist
+{
+    node * list;
+    int size;
+}nodelist;
+
+
 node * create_node(int data)
 {
     node * newnode = (node *)malloc(sizeof(node));
@@ -23,6 +30,14 @@ node * create_node(int data)
     newnode->empty = false;
 
     return newnode;
+}
+
+nodelist * create_nodelist()
+{
+    nodelist * list = (nodelist *)malloc(sizeof(nodelist));
+    list->size = 0;
+
+    return list;
 }
 
 void recur_insert_node(node * n, node * newnode)
