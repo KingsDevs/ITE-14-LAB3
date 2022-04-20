@@ -209,19 +209,20 @@ bool delete_node(node * n, int data)
             int temp_data = n->data;
             n->data = ps->data;
 
-            if(temp_data > n->data)
-                delete_node(n->left, n->data);
-            else
-                delete_node(n->right, n->data);
-
             free(inorder_seq->list);
             free(inorder_seq);
+
+            if(temp_data > n->data)
+                return delete_node(n->left, n->data);
+            else
+                return delete_node(n->right, n->data);
+
         }
     }
     else if(n->data < data)
-        delete_node(n->right, data);
+        return delete_node(n->right, data);
     else if(n->data > data)
-        delete_node(n->left, data);
+        return delete_node(n->left, data);
     
 }
 
@@ -235,19 +236,16 @@ int main(int argc, char const *argv[])
     node * root = NULL;
 
     // root = create_node(4);
-    // insert_node(root, 1);
+    // insert_node(root, 2);
     // insert_node(root, 6);
-    // insert_node(root, 3);
-    // insert_node(root, 5);
+    // delete_node(root, 4);
+   
+    // display_tree(root);
 
-    // nodelist * inorder_sequence = create_nodelist();
-    // get_inorder_seq(inorder_sequence, root);
+    // insert_node(root, 8);
 
-    // for (int i = 0; i < inorder_sequence->size; i++)
-    // {
-    //     printf("%d, ", inorder_sequence->list[i]->data);
-    // }
-    
+    // display_tree(root);
+
 
     while (1)
     {
