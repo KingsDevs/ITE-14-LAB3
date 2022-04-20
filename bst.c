@@ -32,6 +32,7 @@ void recur_insert_node(node * n, node * newnode)
         if(n->left == NULL || n->left->empty)
         {
             n->left = newnode;
+            n->left->empty = false;
         }
         else
         {
@@ -43,6 +44,7 @@ void recur_insert_node(node * n, node * newnode)
         if(n->right == NULL)
         {
             n->right = newnode;
+            n->right->empty = false;
         }
         else
         {
@@ -88,6 +90,9 @@ void recur_display_tree(node * n, int curr_space, char nodetype)
 
 bool delete_node(node * n, int data)
 {
+    if(n == NULL)
+        return false;
+
     if (n->data == data)
     {
         if(n->left == NULL && n->right == NULL)
@@ -101,8 +106,7 @@ bool delete_node(node * n, int data)
         delete_node(n->right, data);
     else if(n->data > data)
         delete_node(n->left, data);
-    else    
-        return false;
+    
 }
 
 void display_tree(node * n)
@@ -132,7 +136,7 @@ int main(int argc, char const *argv[])
 
         if(choice == 1)
         {
-            if(root == NULL)
+            if(root == NULL || root->empty)
                 printf("The tree is empty!\n");
             else
                 display_tree(root);
