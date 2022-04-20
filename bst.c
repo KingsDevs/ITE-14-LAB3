@@ -101,6 +101,24 @@ bool delete_node(node * n, int data)
             n->empty = true;
             return true;
         }
+        else if(n->left != NULL && n->right == NULL)
+        {
+            node * temp = n;
+            n = n->left;
+            free(temp);
+
+            temp->empty = true;
+            return true;
+        }
+        else if(n->left == NULL && n->right != NULL)
+        {
+            node * temp = n;
+            n = n->right;
+            free(temp);
+
+            temp->empty = true;
+            return true;
+        }
     }
     else if(n->data < data)
         delete_node(n->right, data);
