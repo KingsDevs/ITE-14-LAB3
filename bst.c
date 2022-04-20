@@ -15,7 +15,7 @@ typedef struct _node
 
 typedef struct _nodelist
 {
-    node * list;
+    node ** list;
     int size;
 }nodelist;
 
@@ -35,9 +35,72 @@ node * create_node(int data)
 nodelist * create_nodelist()
 {
     nodelist * list = (nodelist *)malloc(sizeof(nodelist));
+
+    list->list = (node **)malloc(sizeof(node *));
     list->size = 0;
 
     return list;
+}
+
+void insert_in_nodelist(nodelist * list, node * n)
+{
+    if(list->size == 0)
+    {
+        list->list[0] = n;
+        list->size ++;
+    }
+    else
+    {
+        list->list = (node **)realloc(list->list, (list->size + 1) * sizeof(node *));
+        list->list[list->size] = n;
+        list->size++;
+    }
+}
+
+
+void get_inorder_seq(nodelist * inorder_sequence, node * n)
+{
+    if(n != NULL)
+    {
+        if(!n->empty)
+        {
+            get_inorder_seq(inorder_sequence, n->left);
+            insert_in_nodelist(inorder_sequence, n);
+            get_inorder_seq(inorder_sequence, n->right);
+        }
+    }
+}
+
+node * get_predecessor(nodelist * inorder_sequence, node * n)
+{
+    for (int i = 0; i < inorder_sequence->size; i++)
+    {
+        if(inorder_sequence->list[i] == n)
+        {
+            if(i == 0)
+                return NULL;
+            else
+                return inorder_sequence->list[i - 1];
+        }
+    }
+    
+    return NULL;
+}
+
+node * get_successor(nodelist * inorder_sequence, node * n)
+{
+    for (int i = 0; i < inorder_sequence->size; i++)
+    {
+        if(inorder_sequence->list[i] == n)
+        {
+            if(i == inorder_sequence->size - 1)
+                return NULL;
+            else
+                return inorder_sequence->list[i + 1];
+        }
+    }
+    
+    return NULL;
 }
 
 void recur_insert_node(node * n, node * newnode)
@@ -134,6 +197,19 @@ bool delete_node(node * n, int data)
             temp->empty = true;
             return true;
         }
+        else
+        {
+            nodelist * inorder_seq = create_nodelist();
+            get_inorder_seq(inorder_seq, n);
+
+            node * ps = get_predecessor(inorder_seq, n);
+            if(ps == NULL)
+                ps = get_successor(inorder_seq, n);
+
+            n->data = ps->data;
+
+
+        }
     }
     else if(n->data < data)
         delete_node(n->right, data);
@@ -153,62 +229,72 @@ int main(int argc, char const *argv[])
 
     // root = create_node(4);
     // insert_node(root, 1);
+    // insert_node(root, 6);
+    // insert_node(root, 3);
+    // insert_node(root, 5);
 
-    // delete_node(root, 1);
+    // nodelist * inorder_sequence = create_nodelist();
+    // get_inorder_seq(inorder_sequence, root);
 
-    while (1)
-    {
-        printf("1. Display Tree\n");
-        printf("2. Insert Node\n");
-        printf("3. Delete Node\n");
-        printf("4. Exit\n");
-        printf(">> ");
-
-        int choice;
-        scanf(" %d", &choice);
-
-        if(choice == 1)
-        {
-            if(root == NULL || root->empty)
-                printf("The tree is empty!\n");
-            else
-                display_tree(root);
-        }
-        else if(choice == 2)
-        {
-            printf("Enter a number to insert\n>> ");
-            int num;
-            scanf(" %d", &num);
-
-            if(root == NULL)
-                root = create_node(num);
-            else
-                insert_node(root, num);
-        }
-        else if(choice == 3)
-        {
-            if(root == NULL)
-            {
-                printf("The tree is empty!\n");
-                continue;
-            }
-
-            printf("Enter a number to delete\n>> ");
-            int num;
-            scanf(" %d", &num);
-
-            bool isfound = delete_node(root, num);
-
-            if(isfound)
-                printf("The node successfully deleted!\n");
-            else
-                printf("Node not found!\n");
-
-        }
-        else
-            break;
+    // for (int i = 0; i < inorder_sequence->size; i++)
+    // {
+    //     printf("%d, ", inorder_sequence->list[i]->data);
+    // }
     
-    }
+
+    // while (1)
+    // {
+    //     printf("1. Display Tree\n");
+    //     printf("2. Insert Node\n");
+    //     printf("3. Delete Node\n");
+    //     printf("4. Exit\n");
+    //     printf(">> ");
+
+    //     int choice;
+    //     scanf(" %d", &choice);
+
+    //     if(choice == 1)
+    //     {
+    //         if(root == NULL || root->empty)
+    //             printf("The tree is empty!\n");
+    //         else
+    //             display_tree(root);
+    //     }
+    //     else if(choice == 2)
+    //     {
+    //         printf("Enter a number to insert\n>> ");
+    //         int num;
+    //         scanf(" %d", &num);
+
+    //         if(root == NULL)
+    //             root = create_node(num);
+    //         else
+    //             insert_node(root, num);
+    //     }
+    //     else if(choice == 3)
+    //     {
+    //         if(root == NULL)
+    //         {
+    //             printf("The tree is empty!\n");
+    //             continue;
+    //         }
+
+    //         printf("Enter a number to delete\n>> ");
+    //         int num;
+    //         scanf(" %d", &num);
+
+    //         bool isfound = delete_node(root, num);
+
+    //         if(isfound)
+    //             printf("The node successfully deleted!\n");
+    //         else
+    //             printf("Node not found!\n");
+
+    //     }
+    //     else
+    //         break;
+    
+    // }
     
 
     return 0;
