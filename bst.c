@@ -94,18 +94,15 @@ bool delete_node(node * n, int data)
         {
             free(n);
             n->empty = true;
-            return n;
+            return true;
         }
     }
-    else
-    {
-        if(n->data < data)
-            delete_node(n->right, data);
-        else if(n->data > data)
-            delete_node(n->left, data);
-    }
-    
-    return false;
+    else if(n->data < data)
+        delete_node(n->right, data);
+    else if(n->data > data)
+        delete_node(n->left, data);
+    else    
+        return false;
 }
 
 void display_tree(node * n)
