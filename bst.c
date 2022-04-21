@@ -133,10 +133,10 @@ void recur_insert_node(node * n, node * newnode)
 
 void insert_node(node * root, int data)
 {
+   
     node * newnode = create_node(data);
-
     recur_insert_node(root, newnode);
-
+    
 }
 
 void recur_display_tree(node * n, int curr_space, char nodetype)
@@ -213,9 +213,9 @@ bool delete_node(node * n, int data)
             free(inorder_seq);
 
             if(temp_data > n->data)
-                return delete_node(n->left, n->data);
+                return delete_node(n->left, ps->data);
             else
-                return delete_node(n->right, n->data);
+                return delete_node(n->right, ps->data);
 
         }
     }
@@ -236,16 +236,15 @@ int main(int argc, char const *argv[])
     node * root = NULL;
 
     // root = create_node(4);
-    // insert_node(root, 2);
-    // insert_node(root, 6);
+    // insert_node(root, 3);
+    // insert_node(root, 5);
     // delete_node(root, 4);
    
     // display_tree(root);
 
-    // insert_node(root, 8);
+    // insert_node(root, 4);
 
     // display_tree(root);
-
 
     while (1)
     {
@@ -301,6 +300,5 @@ int main(int argc, char const *argv[])
     
     }
     
-
     return 0;
 }
