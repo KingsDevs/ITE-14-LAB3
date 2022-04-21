@@ -175,7 +175,7 @@ bool delete_node(node * n, int data)
     {
         if(n->left == NULL && n->right == NULL)
         {
-            free(n);
+            //free(n);
             n->empty = true;
             return true;
         }
@@ -183,7 +183,7 @@ bool delete_node(node * n, int data)
         {
             node * temp = n;
             n = n->left;
-            free(temp);
+            //free(temp);
 
             temp->empty = true;
             return true;
@@ -192,7 +192,7 @@ bool delete_node(node * n, int data)
         {
             node * temp = n;
             n = n->right;
-            free(temp);
+            //free(temp);
 
             temp->empty = true;
             return true;
