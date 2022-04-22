@@ -71,20 +71,12 @@ void get_inorder_seq(nodelist * inorder_sequence, node * n)
     }
 }
 
-node * get_predecessor(nodelist * inorder_sequence, node * n)
+node * get_predecessor(node * left_node)
 {
-    for (int i = 0; i < inorder_sequence->size; i++)
-    {
-        if(inorder_sequence->list[i] == n)
-        {
-            if(i == 0)
-                return NULL;
-            else
-                return inorder_sequence->list[i - 1];
-        }
-    }
-    
-    return NULL;
+    if(left_node->right == NULL)
+        return left_node;
+    else
+        return get_predecessor(left_node->right);
 }
 
 node * get_successor(nodelist * inorder_sequence, node * n)
@@ -199,24 +191,13 @@ bool delete_node(node * n, int data)
         }
         else
         {
-            nodelist * inorder_seq = create_nodelist();
-            get_inorder_seq(inorder_seq, n);
-
-            node * ps = get_predecessor(inorder_seq, n);
-            if(ps == NULL)
-                ps = get_successor(inorder_seq, n);
+            node * prede = get_predecessor(n->left);
             
             int temp_data = n->data;
-            n->data = ps->data;
+            n->data = prede->data;
+            prede->empty = true;
 
-            free(inorder_seq->list);
-            free(inorder_seq);
-
-            if(temp_data > n->data)
-                return delete_node(n->left, ps->data);
-            else
-                return delete_node(n->right, ps->data);
-
+            return true;
         }
     }
     else if(n->data < data)
