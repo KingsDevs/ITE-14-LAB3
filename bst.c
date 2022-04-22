@@ -13,13 +13,6 @@ typedef struct _node
 
 }node;
 
-typedef struct _nodelist
-{
-    node ** list;
-    int size;
-}nodelist;
-
-
 node * create_node(int data)
 {
     node * newnode = (node *)malloc(sizeof(node));
@@ -32,67 +25,12 @@ node * create_node(int data)
     return newnode;
 }
 
-nodelist * create_nodelist()
-{
-    nodelist * list = (nodelist *)malloc(sizeof(nodelist));
-
-    list->list = (node **)malloc(sizeof(node *));
-    list->size = 0;
-
-    return list;
-}
-
-void insert_in_nodelist(nodelist * list, node * n)
-{
-    if(list->size == 0)
-    {
-        list->list[0] = n;
-        list->size ++;
-    }
-    else
-    {
-        list->list = (node **)realloc(list->list, (list->size + 1) * sizeof(node *));
-        list->list[list->size] = n;
-        list->size++;
-    }
-}
-
-
-void get_inorder_seq(nodelist * inorder_sequence, node * n)
-{
-    if(n != NULL)
-    {
-        if(!n->empty)
-        {
-            get_inorder_seq(inorder_sequence, n->left);
-            insert_in_nodelist(inorder_sequence, n);
-            get_inorder_seq(inorder_sequence, n->right);
-        }
-    }
-}
-
 node * get_predecessor(node * left_node)
 {
     if(left_node->right == NULL)
         return left_node;
     else
         return get_predecessor(left_node->right);
-}
-
-node * get_successor(nodelist * inorder_sequence, node * n)
-{
-    for (int i = 0; i < inorder_sequence->size; i++)
-    {
-        if(inorder_sequence->list[i] == n)
-        {
-            if(i == inorder_sequence->size - 1)
-                return NULL;
-            else
-                return inorder_sequence->list[i + 1];
-        }
-    }
-    
-    return NULL;
 }
 
 void recur_insert_node(node * n, node * newnode)
