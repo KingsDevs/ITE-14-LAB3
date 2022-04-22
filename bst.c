@@ -25,12 +25,15 @@ node * create_node(int data)
     return newnode;
 }
 
-node * get_predecessor(node * left_node)
+node * get_predecessor(node * left_node, node ** prede_parent)
 {
     if(left_node->right == NULL)
         return left_node;
     else
-        return get_predecessor(left_node->right);
+    {
+        *prede_parent = left_node;
+        return get_predecessor(left_node->right, prede_parent);
+    }
 }
 
 void recur_insert_node(node * n, node * newnode)
@@ -121,13 +124,16 @@ node * delete_node(node * n, int data)
         }
         else
         {
-            node * prede = get_predecessor(n->left);
-            
-            int temp_data = n->data;
+            node * prede_parent = n;
+            node * prede = get_predecessor(n->left, &prede_parent);
+        
             n->data = prede->data;
             
             free(prede);
-            prede = NULL;
+            if (prede_parent == n)
+                prede_parent->left = NULL;
+            else
+                prede_parent->right = NULL;
 
             return n;
         }
@@ -155,8 +161,9 @@ int main(int argc, char const *argv[])
     node * root = NULL;
 
     // root = create_node(4);
-    // insert_node(root, 3);
+    // insert_node(root, 2);
     // insert_node(root, 5);
+  
     // delete_node(root, 4);
    
     // display_tree(root);
