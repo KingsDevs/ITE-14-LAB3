@@ -37,7 +37,7 @@ void recur_insert_node(node * n, node * newnode)
 {
     if(n->data > newnode->data)
     {
-        if(n->left == NULL || n->left->empty)
+        if(n->left == NULL)
         {
             n->left = newnode;
             n->left->empty = false;
@@ -47,7 +47,7 @@ void recur_insert_node(node * n, node * newnode)
             recur_insert_node(n->left, newnode);
         }
     }
-    else if(n->data < newnode->data || n->right->empty)
+    else if(n->data < newnode->data)
     {
         if(n->right == NULL)
         {
@@ -96,36 +96,28 @@ void recur_display_tree(node * n, int curr_space, char nodetype)
     
 }
 
-bool delete_node(node * n, int data)
+node * delete_node(node * n, int data)
 {
     if(n == NULL)
-        return false;
+        return NULL;
 
     if (n->data == data)
     {
-        if(n->left == NULL && n->right == NULL)
+        if(n->left == NULL)
         {
-            //free(n);
-            n->empty = true;
-            return true;
-        }
-        else if(n->left != NULL && n->right == NULL)
-        {
-            node * temp = n;
-            n = n->left;
-            //free(temp);
+            node * temp = n->right;
+            free(n);
+            n = NULL;
 
-            temp->empty = true;
-            return true;
+            return temp;
         }
-        else if(n->left == NULL && n->right != NULL)
+        else if(n->right == NULL)
         {
-            node * temp = n;
-            n = n->right;
-            //free(temp);
+            node * temp = n->left;
+            free(n);
+            n = NULL;
 
-            temp->empty = true;
-            return true;
+            return temp;
         }
         else
         {
@@ -133,15 +125,23 @@ bool delete_node(node * n, int data)
             
             int temp_data = n->data;
             n->data = prede->data;
-            prede->empty = true;
+            
+            free(prede);
+            prede = NULL;
 
-            return true;
+            return n;
         }
     }
     else if(n->data < data)
-        return delete_node(n->right, data);
+    {
+        n->right = delete_node(n->right, data);
+        return n->right;
+    }
     else if(n->data > data)
-        return delete_node(n->left, data);
+    {
+        n->left = delete_node(n->left, data);
+        return n->left;
+    }
     
 }
 
@@ -206,12 +206,14 @@ int main(int argc, char const *argv[])
             int num;
             scanf(" %d", &num);
 
-            bool isfound = delete_node(root, num);
-
-            if(isfound)
-                printf("The node successfully deleted!\n");
+            node * temp = delete_node(root, num);
+            if(temp == NULL)
+                printf("That node doesn't exist!\n");
             else
-                printf("Node not found!\n");
+            {
+                printf("Node deleted successfully!\n");
+                root = temp;
+            }
 
         }
         else
